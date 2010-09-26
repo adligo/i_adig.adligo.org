@@ -13,9 +13,10 @@ public interface I_GInvoker<P,R> {
 	/**
 	 * @param a valueObject could be a Integer, String
 	 *          I_TemplateParams, List exc
+	 *          
 	 * @return
 	 */
-	public R invokeG(P valueObject);
+	public R invoke(P valueObject);
 	
 	/**
 	 * should return the class of the return type R

@@ -15,7 +15,7 @@ public class ImplTest extends BaseGInvoker implements I_GInvoker<String, Integer
 	}
 	
 	@Override
-	public Integer invokeG(String valueObject) {
+	public Integer invoke(String valueObject) {
 		// TODO Auto-generated method stub
 		return null;
 	}
