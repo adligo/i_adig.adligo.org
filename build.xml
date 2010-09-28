@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="jar-all" name="adig">
+	<import file="${user.home}/conf/adligo/build.xml"/>
+</project>
