@@ -39,6 +39,9 @@ public class ProxyGInvoker<P,R> extends BaseGProxyInvoker implements I_GInvoker<
 	}
 
 	public synchronized void setDelegate(I_GInvoker<P, R> delegate) {
+		if (log.isDebugEnabled()) {
+			log.debug("setting delegate " + delegate + " for ProxyGInvoker " + super.getName());
+		}
 		this.delegate = delegate;
 	}
 

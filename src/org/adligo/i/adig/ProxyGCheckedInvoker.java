@@ -40,6 +40,9 @@ public class ProxyGCheckedInvoker<P,R> extends BaseGProxyInvoker implements I_GC
 	}
 
 	public synchronized void setDelegate(I_GCheckedInvoker<P, R> delegate) {
+		if (log.isDebugEnabled()) {
+			log.debug("setting delegate " + delegate + " for ProxyGCheckedInvoker " + super.getName());
+		}
 		this.delegate = delegate;
 	}
 

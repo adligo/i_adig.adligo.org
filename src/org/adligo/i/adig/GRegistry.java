@@ -98,7 +98,9 @@ public class GRegistry {
 		@SuppressWarnings("unchecked")
 		ProxyGCheckedInvoker<P,R> pi = (ProxyGCheckedInvoker<P,R>) checked.get(key);
 		if (pi == null) {
-			checked.put(key, new ProxyGCheckedInvoker<P,R>(invoker, key));
+			pi = new ProxyGCheckedInvoker<P,R>(invoker, key);
+			pi.setDelegate(invoker);
+			checked.put(key, pi);
 			if (log.isInfoEnabled()) {
 				log.info("addInvoker " + key + " is now " + checked.get(key));
 			}
@@ -216,7 +218,9 @@ public class GRegistry {
 		@SuppressWarnings("unchecked")
 		ProxyGInvoker<P,R> pi = (ProxyGInvoker<P,R>) invokers.get(key);
 		if (pi == null) {
-			invokers.put(key, new ProxyGInvoker<P,R>(invoker, key));
+			pi = new ProxyGInvoker<P,R>(invoker, key);
+			pi.setDelegate(invoker);
+			invokers.put(key, pi);
 			if (log.isInfoEnabled()) {
 				log.info("addInvoker " + key + " is now " + invokers.get(key));
 			}
