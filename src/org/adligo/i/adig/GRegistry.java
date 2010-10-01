@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.adligo.i.adi.client.I_CheckedInvoker;
+import org.adligo.i.adi.client.ProxyInvoker;
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
 import org.adligo.i.util.client.I_Map;
@@ -23,10 +24,10 @@ public class GRegistry {
 	public static final String GET_CHECKED_INVOKER_METHOD_NAME = "getCheckedInvoker(String key, P param, R returnType)";
 	public static final String GET_INVOKER_METHOD_NAME = "getInvoker(String key, P param, R returnType)";
 	
-	private static final Map<String,I_GInvoker<?,?>> invokers = 
-		new HashMap<String, I_GInvoker<?,?>>();
-	private static final Map<String,I_GCheckedInvoker<?,?>> checked = 
-		new HashMap<String, I_GCheckedInvoker<?,?>>();
+	private static final Map<String,ProxyGInvoker<?,?>> invokers = 
+		new HashMap<String, ProxyGInvoker<?,?>>();
+	private static final Map<String, ProxyGCheckedInvoker<?,?>> checked = 
+		new HashMap<String, ProxyGCheckedInvoker<?,?>>();
 	
 	/**
 	 * see comments in org.adligo.i.adi.client.Registry method with same name
@@ -63,12 +64,10 @@ public class GRegistry {
 		}
 		I_GCheckedInvoker<?,?> result = checked.get(key);
 		if (result == null) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setMethodCall(GET_CHECKED_INVOKER_METHOD_NAME);
-			x.setChecked(true);
-			x.setWas_null(true);
-			x.setKey(key);
-			throw x;
+			ProxyGCheckedInvoker<P,R> newResult = new ProxyGCheckedInvoker<P,R>(param,returnType);
+			newResult.setName(key);
+			checked.put(key, newResult);
+			return (I_GCheckedInvoker<P,R>) newResult;
 		}
 		if (!param.isAssignableFrom(result.getParameterClass())) {
 			InvokerRequestException x = new InvokerRequestException();
@@ -95,21 +94,35 @@ public class GRegistry {
 		return (I_GCheckedInvoker<P,R>) result;
 	}
 
-	public static synchronized void addCheckedInvoker(String key, I_GCheckedInvoker<?,?> invoker){
-		I_GCheckedInvoker<?,?> current = checked.get(key);
-		if (current != null) {
-			if (log.isWarnEnabled()) {
-				log.warn("checked invoker with name " + key + " was NOT replaced when calling addCheckedInvoker");
+	public static synchronized <P,R> void addCheckedInvoker(String key, I_GCheckedInvoker<P,R> invoker){
+		@SuppressWarnings("unchecked")
+		ProxyGCheckedInvoker<P,R> pi = (ProxyGCheckedInvoker<P,R>) checked.get(key);
+		if (pi == null) {
+			checked.put(key, new ProxyGCheckedInvoker<P,R>(invoker, key));
+			if (log.isInfoEnabled()) {
+				log.info("addInvoker " + key + " is now " + checked.get(key));
 			}
-		} else  {
-			checked.put(key, invoker);
+		} else {
+			if (pi.getDelegate() == null) {
+				pi.setDelegate(invoker);
+				if (log.isInfoEnabled()) {
+					log.info("addInvoker " + key + " is now " + checked.get(key));
+				}
+			} else {
+				if (log.isWarnEnabled()) {
+					log.warn("invoker with name " + key + " was NOT replaced when calling addInvoker");
+				}
+			}
+		}
+		if (log.isDebugEnabled()) {
+			log.info("addCheckedInvoker " + key + " is now " + invokers.get(key));
 		}
 	}
 	
 	public static synchronized void removeCheckedInvoker(String key){
 		checked.remove(key);
 	}
-	
+	/*
 	public static synchronized void addOrReplaceCheckedInvoker(String key, I_GCheckedInvoker<?,?> invoker) {
 		checked.put(key, invoker);
 	}
@@ -117,6 +130,7 @@ public class GRegistry {
 	public static synchronized void addOrReplaceCheckedInvokers(Map<String,I_GCheckedInvoker<?,?>> p ) {
 		checked.putAll(p);
 	}
+	*/
 	
 	/**
 	 * see comments in org.adligo.i.adi.client.Registry method with same name
@@ -153,12 +167,10 @@ public class GRegistry {
 		}
 		I_GInvoker<?,?> result = invokers.get(key);
 		if (result == null) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setMethodCall(GET_INVOKER_METHOD_NAME);
-			x.setChecked(false);
-			x.setWas_null(true);
-			x.setKey(key);
-			throw x;
+			ProxyGInvoker<P,R> newResult = new ProxyGInvoker<P,R>(param,returnType);
+			newResult.setName(key);
+			invokers.put(key, newResult);
+			return (I_GInvoker<P,R>) newResult;
 		}
 		if (!param.isAssignableFrom(result.getParameterClass())) {
 			InvokerRequestException x = new InvokerRequestException();
@@ -185,21 +197,35 @@ public class GRegistry {
 		return (I_GInvoker<P,R>) result;
 	}
 
-	public static synchronized void addInvoker(String key, I_GInvoker<?,?> invoker){
-		I_GInvoker<?,?> current = invokers.get(key);
-		if (current != null) {
-			if (log.isWarnEnabled()) {
-				log.warn("checked invoker with name " + key + " was NOT replaced when calling addInvoker");
+	public static synchronized <P,R> void addInvoker(String key, I_GInvoker<P,R> invoker){
+		@SuppressWarnings("unchecked")
+		ProxyGInvoker<P,R> pi = (ProxyGInvoker<P,R>) invokers.get(key);
+		if (pi == null) {
+			invokers.put(key, new ProxyGInvoker<P,R>(invoker, key));
+			if (log.isInfoEnabled()) {
+				log.info("addInvoker " + key + " is now " + invokers.get(key));
 			}
-		} else  {
-			invokers.put(key, invoker);
+		} else {
+			if (pi.getDelegate() == null) {
+				pi.setDelegate(invoker);
+				if (log.isInfoEnabled()) {
+					log.info("addInvoker " + key + " is now " + invokers.get(key));
+				}
+			} else {
+				if (log.isWarnEnabled()) {
+					log.warn("invoker with name " + key + " was NOT replaced when calling addInvoker");
+				}
+			}
+		}
+		if (log.isDebugEnabled()) {
+			log.info("addInvoker " + key + " is now " + invokers.get(key));
 		}
 	}
 	
 	public static synchronized void removeInvoker(String key){
 		invokers.remove(key);
 	}
-	
+	/*
 	public static synchronized void addOrReplaceInvoker(String key, I_GInvoker<?,?> invoker) {
 		invokers.put(key, invoker);
 	}
@@ -207,4 +233,5 @@ public class GRegistry {
 	public static synchronized void addOrReplaceInvokers(Map<String,I_GInvoker<?,?>> p ) {
 		invokers.putAll(p);
 	}
+	*/
 }
