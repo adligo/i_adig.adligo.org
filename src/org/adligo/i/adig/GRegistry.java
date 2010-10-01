@@ -118,6 +118,16 @@ public class GRegistry {
 			log.info("addCheckedInvoker " + key + " is now " + invokers.get(key));
 		}
 	}
+
+	public static synchronized <P,R> void addOrReplaceCheckedInvoker(String key, I_GCheckedInvoker<P,R> invoker){
+		@SuppressWarnings("unchecked")
+		ProxyGCheckedInvoker<P,R> pi = (ProxyGCheckedInvoker<P,R>) checked.get(key);
+		if (pi == null) {
+			addCheckedInvoker(key, invoker);
+		} else  {
+			pi.setDelegate(invoker);
+		}
+	}
 	
 	public static synchronized void removeCheckedInvoker(String key){
 		checked.remove(key);
@@ -231,6 +241,15 @@ public class GRegistry {
 		invokers.remove(key);
 	}
 	
+	public static synchronized <P,R> void addOrReplaceInvoker(String key, I_GInvoker<P,R> invoker){
+		@SuppressWarnings("unchecked")
+		ProxyGInvoker<P,R> pi = (ProxyGInvoker<P,R>) invokers.get(key);
+		if (pi == null) {
+			addInvoker(key, invoker);
+		} else {
+			pi.setDelegate(invoker);
+		}
+	}
 	/*
 	 * Note I could use introspection to do this but 
 	 * will not work on GWT
