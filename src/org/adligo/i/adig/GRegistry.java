@@ -123,6 +123,11 @@ public class GRegistry {
 		checked.remove(key);
 	}
 	/*
+	 * Note I could use introspection to do this but 
+	 * will not work on GWT
+	 * How to do???
+	 * @todo
+	 * 
 	public static synchronized void addOrReplaceCheckedInvoker(String key, I_GCheckedInvoker<?,?> invoker) {
 		checked.put(key, invoker);
 	}
@@ -225,7 +230,13 @@ public class GRegistry {
 	public static synchronized void removeInvoker(String key){
 		invokers.remove(key);
 	}
+	
 	/*
+	 * Note I could use introspection to do this but 
+	 * will not work on GWT
+	 * How to do???
+	 * @todo
+	 * 
 	public static synchronized void addOrReplaceInvoker(String key, I_GInvoker<?,?> invoker) {
 		invokers.put(key, invoker);
 	}
