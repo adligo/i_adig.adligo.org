@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.adligo.i.adi.client.I_CheckedInvoker;
+import org.adligo.i.adi.client.InvokerNames;
 import org.adligo.i.adi.client.ProxyInvoker;
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;
@@ -29,6 +30,18 @@ public class GRegistry {
 	private static final Map<String, ProxyGCheckedInvoker<?,?>> checked = 
 		new HashMap<String, ProxyGCheckedInvoker<?,?>>();
 	
+	static {
+		addInvoker(InvokerNames.CACHE_READER, new GCacheReader());
+		addInvoker(InvokerNames.CACHE_WRITER, new GCacheWriter());
+		addInvoker(InvokerNames.CACHE_REMOVER, new GCacheRemover());
+		
+		addInvoker(InvokerNames.OUT, new GSystemOut());
+		addInvoker(InvokerNames.ERR, new GSystemErr());
+		addInvoker(InvokerNames.CLOCK, new GSimpleClock());
+		
+		addInvoker(InvokerNames.CONFIGURATION_PROVIDER, new GConfigProvider());
+		addInvoker(InvokerNames.CONSTANTS_FACTORY, new GConstantsFactory());
+	}
 	/**
 	 * see comments in org.adligo.i.adi.client.Registry method with same name
 	 * @param <P> the class that the returned I_GCheckedInvoker accepts as a parameter
