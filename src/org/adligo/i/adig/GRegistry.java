@@ -144,9 +144,24 @@ public class GRegistry {
 		}
 	}
 	
-	public static synchronized void removeCheckedInvoker(String key){
-		checked.remove(key);
+	/**
+	 * removes the proxys delegate,
+	 * for use in test packages only
+	 * @param key
+	 */
+	static synchronized void removeCheckedInvoker(String key){
+		ProxyGCheckedInvoker<?, ?> pInvoker = checked.get(key);
+		pInvoker.setDelegate(null);
 	}
+	
+	/**
+	 * deletes the proxy only for use in the adlg_tests package
+	 * @param key
+	 */
+	static synchronized void deleteCheckedInvoker(String key){
+		log.warn("deleting checked proxy " + key);
+		checked.remove(key);
+	} 
 	/*
 	 * Note I could use introspection to do this but 
 	 * will not work on GWT
@@ -254,9 +269,25 @@ public class GRegistry {
 		}
 	}
 	
-	public static synchronized void removeInvoker(String key){
-		invokers.remove(key);
+	/**
+	 * removes the delegate of proxy with key
+	 * for use in test packages only
+	 * @param key
+	 */
+	static synchronized void removeInvoker(String key){
+		ProxyGInvoker<?,?> pInvoker = invokers.get(key);
+		pInvoker.setDelegate(null);
 	}
+	
+	
+	/**
+	 * for use in adig_tests only
+	 * @param key
+	 */
+	static synchronized void deleteInvoker(String key){
+		log.warn("deleting proxy " + key);
+		invokers.remove(key);
+	} 
 	
 	public static synchronized <P,R> void addOrReplaceInvoker(String key, I_GInvoker<P,R> invoker){
 		@SuppressWarnings("unchecked")
