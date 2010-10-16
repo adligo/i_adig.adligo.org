@@ -82,7 +82,9 @@ public class GRegistry {
 			checked.put(key, newResult);
 			return (I_GCheckedInvoker<P,R>) newResult;
 		}
-		if (!param.isAssignableFrom(result.getParameterClass())) {
+		//isAssignableFrom is not available on GWT's Class JRE emulation
+		// so you probably want to use interfaces for you param and return types
+		if (param != result.getParameterClass()) {
 			InvokerRequestException x = new InvokerRequestException();
 			x.setMethodCall(GET_CHECKED_INVOKER_METHOD_NAME);
 			x.setChecked(true);
@@ -93,7 +95,9 @@ public class GRegistry {
 			x.setRequestedReturn(returnType);
 			throw x;
 		}
-		if (!returnType.isAssignableFrom(result.getReturnClass())) {
+		//isAssignableFrom is not available on GWT's Class JRE emulation
+		// so you probably want to use interfaces for you param and return types
+		if (returnType != result.getReturnClass()) {
 			InvokerRequestException x = new InvokerRequestException();
 			x.setMethodCall(GET_CHECKED_INVOKER_METHOD_NAME);
 			x.setChecked(true);
@@ -217,7 +221,9 @@ public class GRegistry {
 			invokers.put(key, newResult);
 			return (I_GInvoker<P,R>) newResult;
 		}
-		if (!param.isAssignableFrom(result.getParameterClass())) {
+		//isAssignableFrom is not available on GWT's Class JRE emulation
+		// so you probably want to use interfaces for you param and return types
+		if (param != result.getParameterClass()) {
 			InvokerRequestException x = new InvokerRequestException();
 			x.setMethodCall(GET_INVOKER_METHOD_NAME);
 			x.setChecked(false);
@@ -228,7 +234,9 @@ public class GRegistry {
 			x.setRequestedReturn(returnType);
 			throw x;
 		}
-		if (!returnType.isAssignableFrom(result.getReturnClass())) {
+		//isAssignableFrom is not available on GWT's Class JRE emulation
+		// so you probably want to use interfaces for you param and return types
+		if (returnType != result.getReturnClass()) {
 			InvokerRequestException x = new InvokerRequestException();
 			x.setMethodCall(GET_INVOKER_METHOD_NAME);
 			x.setChecked(false);
