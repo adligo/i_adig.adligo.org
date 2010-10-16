@@ -1,4 +1,4 @@
-package org.adligo.i.adig;
+package org.adligo.i.adig.client;
 
 /**
  * This class encapsulates errors in requests for I_GInvokers and I_GCheckedInvokers

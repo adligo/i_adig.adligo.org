@@ -1,4 +1,4 @@
-package org.adligo.i.adig;
+package org.adligo.i.adig.client;
 
 import org.adligo.i.adi.client.I_Invoker;
 import org.adligo.i.adi.client.InvokerNames;

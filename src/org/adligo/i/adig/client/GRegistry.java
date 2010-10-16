@@ -1,4 +1,4 @@
-package org.adligo.i.adig;
+package org.adligo.i.adig.client;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -149,7 +149,7 @@ public class GRegistry {
 	 * for use in test packages only
 	 * @param key
 	 */
-	static synchronized void removeCheckedInvoker(String key){
+	protected static synchronized void removeCheckedInvoker(String key){
 		ProxyGCheckedInvoker<?, ?> pInvoker = checked.get(key);
 		pInvoker.setDelegate(null);
 	}
@@ -158,7 +158,7 @@ public class GRegistry {
 	 * deletes the proxy only for use in the adlg_tests package
 	 * @param key
 	 */
-	static synchronized void deleteCheckedInvoker(String key){
+	protected static synchronized void deleteCheckedInvoker(String key){
 		log.warn("deleting checked proxy " + key);
 		checked.remove(key);
 	} 
@@ -274,7 +274,7 @@ public class GRegistry {
 	 * for use in test packages only
 	 * @param key
 	 */
-	static synchronized void removeInvoker(String key){
+	protected static synchronized void removeInvoker(String key){
 		ProxyGInvoker<?,?> pInvoker = invokers.get(key);
 		pInvoker.setDelegate(null);
 	}
@@ -284,7 +284,7 @@ public class GRegistry {
 	 * for use in adig_tests only
 	 * @param key
 	 */
-	static synchronized void deleteInvoker(String key){
+	protected static synchronized void deleteInvoker(String key){
 		log.warn("deleting proxy " + key);
 		invokers.remove(key);
 	} 

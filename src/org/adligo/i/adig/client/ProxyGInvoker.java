@@ -1,4 +1,4 @@
-package org.adligo.i.adig;
+package org.adligo.i.adig.client;
 
 import org.adligo.i.log.client.Log;
 import org.adligo.i.log.client.LogFactory;

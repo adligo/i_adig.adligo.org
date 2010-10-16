@@ -1,4 +1,4 @@
-package org.adligo.i.adig;
+package org.adligo.i.adig.client;
 
 public interface I_GenericInvoker<P,R> {
 	
