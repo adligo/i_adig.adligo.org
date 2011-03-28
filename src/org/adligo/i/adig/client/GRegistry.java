@@ -35,6 +35,9 @@ public class GRegistry {
 		addInvoker(InvokerNames.CACHE_WRITER, new GCacheWriter());
 		addInvoker(InvokerNames.CACHE_REMOVER, new GCacheRemover());
 		
+		addInvoker(InvokerNames.MEMORY_READER, new GMemoryReader());
+		addInvoker(InvokerNames.MEMORY_WRITER, new GMemoryWriter());
+		
 		addInvoker(InvokerNames.OUT, new GSystemOut());
 		addInvoker(InvokerNames.ERR, new GSystemErr());
 		addInvoker(InvokerNames.CLOCK, new GSimpleClock());
