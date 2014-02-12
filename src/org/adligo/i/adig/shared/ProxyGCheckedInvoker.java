@@ -1,6 +1,6 @@
 package org.adligo.i.adig.shared;
 
-import org.adligo.i.adi.client.InvocationException;
+import org.adligo.i.adi.shared.InvocationException;
 import org.adligo.i.log.shared.Log;
 import org.adligo.i.log.shared.LogFactory;
 

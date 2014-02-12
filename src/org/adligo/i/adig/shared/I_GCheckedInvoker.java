@@ -1,6 +1,7 @@
 package org.adligo.i.adig.shared;
 
-import org.adligo.i.adi.client.InvocationException;
+import org.adligo.i.adi.shared.InvocationException;
+
 
 public interface I_GCheckedInvoker<P,R> extends I_GenericInvoker<P,R> {
 	/**

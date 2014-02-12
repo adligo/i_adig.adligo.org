@@ -1,9 +1,9 @@
 package org.adligo.i.adig.shared;
 
-import org.adligo.i.adi.client.I_Invoker;
-import org.adligo.i.adi.client.InvokerNames;
-import org.adligo.i.adi.client.Registry;
-import org.adligo.i.adi.client.models.CacheRemoverToken;
+import org.adligo.i.adi.shared.I_Invoker;
+import org.adligo.i.adi.shared.InvokerNames;
+import org.adligo.i.adi.shared.Registry;
+import org.adligo.i.adi.shared.models.CacheRemoverToken;
 
 
 /**

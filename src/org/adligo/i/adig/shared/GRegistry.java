@@ -3,12 +3,9 @@ package org.adligo.i.adig.shared;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.adligo.i.adi.client.I_CheckedInvoker;
-import org.adligo.i.adi.client.InvokerNames;
-import org.adligo.i.adi.client.ProxyInvoker;
+import org.adligo.i.adi.shared.InvokerNames;
 import org.adligo.i.log.shared.Log;
 import org.adligo.i.log.shared.LogFactory;
-import org.adligo.i.util.shared.I_Map;
 
 /**
  * This class is used to house swappable parts of code
