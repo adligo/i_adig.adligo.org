@@ -1,8 +1,8 @@
-package org.adligo.i.adig.client;
+package org.adligo.i.adig.shared;
 
 import org.adligo.i.adi.client.InvocationException;
-import org.adligo.i.log.client.Log;
-import org.adligo.i.log.client.LogFactory;
+import org.adligo.i.log.shared.Log;
+import org.adligo.i.log.shared.LogFactory;
 
 public class ProxyGCheckedInvoker<P,R> extends BaseGProxyInvoker implements I_GCheckedInvoker<P,R>{
 	private static final Log log = LogFactory.getLog(ProxyGCheckedInvoker.class);

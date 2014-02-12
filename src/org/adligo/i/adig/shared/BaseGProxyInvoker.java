@@ -1,4 +1,4 @@
-package org.adligo.i.adig.client;
+package org.adligo.i.adig.shared;
 
 public class BaseGProxyInvoker extends BaseGInvoker {
 	/**

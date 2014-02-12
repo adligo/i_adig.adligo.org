@@ -1,7 +1,7 @@
-package org.adligo.i.adig.client;
+package org.adligo.i.adig.shared;
 
-import org.adligo.i.log.client.Log;
-import org.adligo.i.log.client.LogFactory;
+import org.adligo.i.log.shared.Log;
+import org.adligo.i.log.shared.LogFactory;
 
 public class ProxyGInvoker<P,R> extends BaseGProxyInvoker implements I_GInvoker<P,R>{
 	private static final Log log = LogFactory.getLog(ProxyGInvoker.class);

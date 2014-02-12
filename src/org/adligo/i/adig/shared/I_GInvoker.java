@@ -1,4 +1,4 @@
-package org.adligo.i.adig.client;
+package org.adligo.i.adig.shared;
 
 /**
  * this adds Generics to the I_Invoker for jse and gwt platforms

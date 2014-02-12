@@ -1,4 +1,4 @@
-package org.adligo.i.adig.client;
+package org.adligo.i.adig.shared;
 
 import org.adligo.i.adi.client.InvocationException;
 

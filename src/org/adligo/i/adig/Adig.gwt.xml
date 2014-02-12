@@ -3,4 +3,5 @@
 	<inherits name="org.adligo.i.util.I_Util"/>
 	<inherits name="org.adligo.i.log.I_Log"/>
 	<inherits name="org.adligo.i.adi.Adi"/>
+	<source path="shared"/>
 </module>

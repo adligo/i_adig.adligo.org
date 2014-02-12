@@ -1,4 +1,4 @@
-package org.adligo.i.adig.client;
+package org.adligo.i.adig.shared;
 
 /**
  * a helper class for I_GInvoker implementations
