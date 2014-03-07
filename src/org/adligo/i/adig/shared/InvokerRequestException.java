@@ -22,6 +22,12 @@ public class InvokerRequestException extends RuntimeException {
 	private Class<?> actualReturn;
 	private String methodCall;
 	
+	public InvokerRequestException() {}
+	
+	public InvokerRequestException(Exception chain) {
+		super(chain);
+	}
+	
 	public String getMethodCall() {
 		return methodCall;
 	}

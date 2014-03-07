@@ -6,10 +6,12 @@ public class BaseGProxyInvoker extends BaseGInvoker {
 	 * for the proxy delegate
 	 */
 	private String name;
+	private InitalProxyMarker initalMarker;
 	
 	public BaseGProxyInvoker(Class<?> pClass, Class<?> rClass) {
 		super(pClass, rClass);
-		// TODO Auto-generated constructor stub
+		initalMarker = new InitalProxyMarker();
+		initalMarker.fillInStackTrace();
 	}
 
 	public synchronized String getName() {
@@ -18,6 +20,10 @@ public class BaseGProxyInvoker extends BaseGInvoker {
 
 	public synchronized void setName(String name) {
 		this.name = name;
+	}
+
+	public InitalProxyMarker getInitalMarker() {
+		return initalMarker;
 	}
 	
 }

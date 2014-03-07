@@ -17,6 +17,7 @@ import org.adligo.i.log.shared.LogFactory;
  *
  */
 public class GRegistry {
+	
 	private static final Log log = LogFactory.getLog(GRegistry.class);
 	
 	public static final String GET_CHECKED_INVOKER_METHOD_NAME = "getCheckedInvoker(String key, P param, R returnType)";
@@ -75,55 +76,45 @@ public class GRegistry {
 			x.setWas_null_request_return(true);
 			throw x;
 		}
-		I_GCheckedInvoker<?,?> result = checked.get(key);
+		ProxyGCheckedInvoker<?,?> result = checked.get(key);
 		if (result == null) {
 			ProxyGCheckedInvoker<P,R> newResult = new ProxyGCheckedInvoker<P,R>(param,returnType);
 			newResult.setName(key);
 			checked.put(key, newResult);
 			return (I_GCheckedInvoker<P,R>) newResult;
 		}
-		//isAssignableFrom is not available on GWT's Class JRE emulation
-		// so you probably want to use interfaces for you param and return types
-		if (param != result.getParameterClass()) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setMethodCall(GET_CHECKED_INVOKER_METHOD_NAME);
-			x.setChecked(true);
-			x.setKey(key);
-			x.setActualParam(result.getParameterClass());
-			x.setActualReturn(result.getReturnClass());
-			x.setRequestedParam(param);
-			x.setRequestedReturn(returnType);
-			throw x;
-		}
-		//isAssignableFrom is not available on GWT's Class JRE emulation
-		// so you probably want to use interfaces for you param and return types
-		if (returnType != result.getReturnClass()) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setMethodCall(GET_CHECKED_INVOKER_METHOD_NAME);
-			x.setChecked(true);
-			x.setKey(key);
-			x.setActualParam(result.getParameterClass());
-			x.setActualReturn(result.getReturnClass());
-			x.setRequestedParam(param);
-			x.setRequestedReturn(returnType);
-			throw x;
-		}
+		
+		InvokerDelegateMatchVerifier verifier = new InvokerDelegateMatchVerifier();
+		verifier.setKey(key);
+		verifier.setProxy(result);
+		verifier.setGetParam(param);
+		verifier.setGetReturn(returnType);
+		verifier.verifyProxyObtainMatch();
 		return (I_GCheckedInvoker<P,R>) result;
 	}
 
 	public static synchronized <P,R> void addCheckedInvoker(String key, I_GCheckedInvoker<P,R> invoker){
 		@SuppressWarnings("unchecked")
-		ProxyGCheckedInvoker<P,R> pi = (ProxyGCheckedInvoker<P,R>) checked.get(key);
+		ProxyGCheckedInvoker<?,?> pi = (ProxyGCheckedInvoker<?,?>) checked.get(key);
 		if (pi == null) {
-			pi = new ProxyGCheckedInvoker<P,R>(invoker, key);
-			pi.setDelegate(invoker);
+			ProxyGCheckedInvoker<P,R> newPi = new ProxyGCheckedInvoker<P,R>(invoker, key);
+			newPi.setDelegate(invoker);
 			checked.put(key, pi);
 			if (log.isInfoEnabled()) {
 				log.info("addInvoker " + key + " is now " + checked.get(key));
 			}
 		} else {
 			if (pi.getDelegate() == null) {
-				pi.setDelegate(invoker);
+				InvokerDelegateMatchVerifier verifier = new InvokerDelegateMatchVerifier();
+				verifier.setKey(key);
+				verifier.setProxy(pi);
+				verifier.setInvoker(invoker);
+				verifier.verifyInvokerDelegateMatch();
+				
+				@SuppressWarnings("unchecked")
+				ProxyGCheckedInvoker<P,R> casted = (ProxyGCheckedInvoker<P,R>) pi;
+				casted.setDelegate(invoker);
+				
 				if (log.isInfoEnabled()) {
 					log.info("addInvoker " + key + " is now " + checked.get(key));
 				}
@@ -144,7 +135,13 @@ public class GRegistry {
 		if (pi == null) {
 			addCheckedInvoker(key, invoker);
 		} else  {
-			pi.setDelegate(invoker);
+			InvokerDelegateMatchVerifier verifier = new InvokerDelegateMatchVerifier();
+			verifier.setKey(key);
+			verifier.setProxy(pi);
+			verifier.setInvoker(invoker);
+			verifier.verifyInvokerDelegateMatch();
+			ProxyGCheckedInvoker<P,R> casted = (ProxyGCheckedInvoker<P,R>) pi;
+			casted.setDelegate(invoker);
 		}
 	}
 	
@@ -214,39 +211,19 @@ public class GRegistry {
 			x.setWas_null_request_return(true);
 			throw x;
 		}
-		I_GInvoker<?,?> result = invokers.get(key);
+		ProxyGInvoker<?,?> result = invokers.get(key);
 		if (result == null) {
 			ProxyGInvoker<P,R> newResult = new ProxyGInvoker<P,R>(param,returnType);
 			newResult.setName(key);
 			invokers.put(key, newResult);
 			return (I_GInvoker<P,R>) newResult;
 		}
-		//isAssignableFrom is not available on GWT's Class JRE emulation
-		// so you probably want to use interfaces for you param and return types
-		if (param != result.getParameterClass()) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setMethodCall(GET_INVOKER_METHOD_NAME);
-			x.setChecked(false);
-			x.setKey(key);
-			x.setActualParam(result.getParameterClass());
-			x.setActualReturn(result.getReturnClass());
-			x.setRequestedParam(param);
-			x.setRequestedReturn(returnType);
-			throw x;
-		}
-		//isAssignableFrom is not available on GWT's Class JRE emulation
-		// so you probably want to use interfaces for you param and return types
-		if (returnType != result.getReturnClass()) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setMethodCall(GET_INVOKER_METHOD_NAME);
-			x.setChecked(false);
-			x.setKey(key);
-			x.setActualParam(result.getParameterClass());
-			x.setActualReturn(result.getReturnClass());
-			x.setRequestedParam(param);
-			x.setRequestedReturn(returnType);
-			throw x;
-		}
+		InvokerDelegateMatchVerifier verifier = new InvokerDelegateMatchVerifier();
+		verifier.setKey(key);
+		verifier.setProxy(result);
+		verifier.setGetParam(param);
+		verifier.setGetReturn(returnType);
+		verifier.verifyProxyObtainMatch();
 		return (I_GInvoker<P,R>) result;
 	}
 
@@ -298,12 +275,19 @@ public class GRegistry {
 	} 
 	
 	public static synchronized <P,R> void addOrReplaceInvoker(String key, I_GInvoker<P,R> invoker){
-		@SuppressWarnings("unchecked")
-		ProxyGInvoker<P,R> pi = (ProxyGInvoker<P,R>) invokers.get(key);
+		ProxyGInvoker<?,?> pi = (ProxyGInvoker<?,?>) invokers.get(key);
 		if (pi == null) {
 			addInvoker(key, invoker);
 		} else {
-			pi.setDelegate(invoker);
+			InvokerDelegateMatchVerifier verifier = new InvokerDelegateMatchVerifier();
+			verifier.setKey(key);
+			verifier.setProxy(pi);
+			verifier.setInvoker(invoker);
+			verifier.verifyInvokerDelegateMatch();
+			
+			@SuppressWarnings("unchecked")
+			ProxyGInvoker<P,R> casted = (ProxyGInvoker<P,R>) pi;
+			casted.setDelegate(invoker);
 		}
 	}
 	/*
