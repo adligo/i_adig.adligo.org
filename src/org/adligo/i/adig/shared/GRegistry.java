@@ -99,9 +99,9 @@ public class GRegistry {
 		if (pi == null) {
 			ProxyGCheckedInvoker<P,R> newPi = new ProxyGCheckedInvoker<P,R>(invoker, key);
 			newPi.setDelegate(invoker);
-			checked.put(key, pi);
+			checked.put(key, newPi);
 			if (log.isInfoEnabled()) {
-				log.info("addInvoker " + key + " is now " + checked.get(key));
+				log.info("addCheckedInvoker " + key + " is now " + checked.get(key));
 			}
 		} else {
 			if (pi.getDelegate() == null) {
@@ -229,17 +229,27 @@ public class GRegistry {
 
 	public static synchronized <P,R> void addInvoker(String key, I_GInvoker<P,R> invoker){
 		@SuppressWarnings("unchecked")
-		ProxyGInvoker<P,R> pi = (ProxyGInvoker<P,R>) invokers.get(key);
+		ProxyGInvoker<?,?> pi = (ProxyGInvoker<?,?>) invokers.get(key);
 		if (pi == null) {
-			pi = new ProxyGInvoker<P,R>(invoker, key);
-			pi.setDelegate(invoker);
-			invokers.put(key, pi);
+			ProxyGInvoker<P,R> newPi = new ProxyGInvoker<P,R>(invoker, key);
+			newPi.setDelegate(invoker);
+			invokers.put(key, newPi);
 			if (log.isInfoEnabled()) {
 				log.info("addInvoker " + key + " is now " + invokers.get(key));
 			}
 		} else {
 			if (pi.getDelegate() == null) {
-				pi.setDelegate(invoker);
+				
+				InvokerDelegateMatchVerifier verifier = new InvokerDelegateMatchVerifier();
+				verifier.setKey(key);
+				verifier.setProxy(pi);
+				verifier.setInvoker(invoker);
+				verifier.verifyInvokerDelegateMatch();
+				
+				@SuppressWarnings("unchecked")
+				ProxyGInvoker<P,R> casted = (ProxyGInvoker<P,R>) pi;
+				casted.setDelegate(invoker);
+				
 				if (log.isInfoEnabled()) {
 					log.info("addInvoker " + key + " is now " + invokers.get(key));
 				}
