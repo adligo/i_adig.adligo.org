@@ -24,37 +24,37 @@ public class InvokerDelegateMatchVerifier {
 	
 	public void verifyInvokerDelegateMatch() {
 		if (!proxyParam.equals(invokerParam)) {
-			throwParamMismatchError();
+			throwParamMismatchError(invokerParam);
 		}
 		if (!proxyReturn.equals(invokerReturn)) {
-			throwReturnMismatchError();
+			throwReturnMismatchError(invokerReturn);
 		}
 	}
 
-	private void throwParamMismatchError() {
+	private void throwParamMismatchError(Class<?> paramClass) {
 		throw new IllegalStateException(THE_INITAL_CALL_TO + 
 				methodName + WITH_KEY +
 				key + HAD_A_PARAM_CLASS + proxyParam +
 				AND_THIS_PARAMETER_CLASS_IS +
-				invokerParam + 
+				paramClass + 
 				PLEASE_FIX_THE_CODE_OR_TALK_TO_YOUR_ARCHITECT, marker);
 	}
 
-	private void throwReturnMismatchError() {
+	private void throwReturnMismatchError(Class<?> returnClass) {
 		throw new IllegalStateException(THE_INITAL_CALL_TO + 
 				methodName + WITH_KEY +
 				key + HAD_A_RETURN_CLASS + proxyReturn +
 				AND_THIS_RETURN_CLASS_IS +
-				invokerReturn + 
+				returnClass + 
 				PLEASE_FIX_THE_CODE_OR_TALK_TO_YOUR_ARCHITECT, marker);
 	}
 
 	public void verifyProxyObtainMatch() {
 		if (!proxyParam.equals(getParam)) {
-			throwParamMismatchError();
+			throwParamMismatchError(getParam);
 		}
 		if (!proxyReturn.equals(getReturn)) {
-			throwReturnMismatchError();
+			throwReturnMismatchError(getReturn);
 		}
 	}
 

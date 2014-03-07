@@ -18,10 +18,14 @@ import org.adligo.i.log.shared.LogFactory;
  */
 public class GRegistry {
 	
+	public static final String GET_CHECKED_INVOKER = "getCheckedInvoker";
+	public static final String THE_RETURN_TYPE = "The returnType passed to ";
+	public static final String THE_PARAM_PASSED_TO = "The param passed to ";
+	public static final String GET_INVOKER = "getInvoker";
+	public static final String END_MESSAGE = "(String key, Class param, Class returnType) was null.";
+	public static final String THE_KEY_PASSED_TO = "The key passed to ";
+
 	private static final Log log = LogFactory.getLog(GRegistry.class);
-	
-	public static final String GET_CHECKED_INVOKER_METHOD_NAME = "getCheckedInvoker(String key, P param, R returnType)";
-	public static final String GET_INVOKER_METHOD_NAME = "getInvoker(String key, P param, R returnType)";
 	
 	private static final Map<String,ProxyGInvoker<?,?>> invokers = 
 		new HashMap<String, ProxyGInvoker<?,?>>();
@@ -55,26 +59,16 @@ public class GRegistry {
 	@SuppressWarnings("unchecked")
 	public static synchronized <P,R> I_GCheckedInvoker<P,R> getCheckedInvoker(String key, Class<P> param, Class<R> returnType) {
 		if (key == null) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setChecked(true);
-			x.setMethodCall(GET_CHECKED_INVOKER_METHOD_NAME);
-			throw x;
+			throw new IllegalStateException(THE_KEY_PASSED_TO + 
+					GET_CHECKED_INVOKER + END_MESSAGE);
 		}
 		if (param == null) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setMethodCall(GET_CHECKED_INVOKER_METHOD_NAME);
-			x.setChecked(true);
-			x.setKey(key);
-			x.setWas_null_request_param(true);
-			throw x;
+			throw new IllegalStateException(THE_PARAM_PASSED_TO + 
+					GET_CHECKED_INVOKER + END_MESSAGE);
 		}
 		if (returnType == null) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setMethodCall(GET_CHECKED_INVOKER_METHOD_NAME);
-			x.setChecked(true);
-			x.setKey(key);
-			x.setWas_null_request_return(true);
-			throw x;
+			throw new IllegalStateException(THE_RETURN_TYPE + 
+					GET_CHECKED_INVOKER + END_MESSAGE);
 		}
 		ProxyGCheckedInvoker<?,?> result = checked.get(key);
 		if (result == null) {
@@ -190,26 +184,16 @@ public class GRegistry {
 	@SuppressWarnings("unchecked")
 	public static synchronized <P,R> I_GInvoker<P,R> getInvoker(String key, Class<P> param, Class<R> returnType) {
 		if (key == null) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setChecked(false);
-			x.setMethodCall(GET_INVOKER_METHOD_NAME);
-			throw x;
+			throw new IllegalStateException(THE_KEY_PASSED_TO + 
+					GET_INVOKER + END_MESSAGE);
 		}
 		if (param == null) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setMethodCall(GET_INVOKER_METHOD_NAME);
-			x.setChecked(false);
-			x.setKey(key);
-			x.setWas_null_request_param(true);
-			throw x;
+			throw new IllegalStateException(THE_PARAM_PASSED_TO + 
+					GET_INVOKER + END_MESSAGE);
 		}
 		if (returnType == null) {
-			InvokerRequestException x = new InvokerRequestException();
-			x.setMethodCall(GET_INVOKER_METHOD_NAME);
-			x.setChecked(false);
-			x.setKey(key);
-			x.setWas_null_request_return(true);
-			throw x;
+			throw new IllegalStateException(THE_RETURN_TYPE + 
+					GET_INVOKER + END_MESSAGE);
 		}
 		ProxyGInvoker<?,?> result = invokers.get(key);
 		if (result == null) {
