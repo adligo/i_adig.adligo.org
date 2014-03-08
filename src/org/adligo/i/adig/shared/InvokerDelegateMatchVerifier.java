@@ -1,16 +1,18 @@
 package org.adligo.i.adig.shared;
 
+import org.adligo.i.util.shared.AppenderFactory;
+
 
 public class InvokerDelegateMatchVerifier {
-	public static final String PLEASE_FIX_THE_CODE_OR_TALK_TO_YOUR_ARCHITECT = "\nPlease fix the code or talk to your architect.";
-	public static final String GET_CHECKED_INVOKER = "getCheckedInvoker(String key, Class param, Class return)\n";
-	public static final String GET_INVOKER = "getInvoker(String key, Class param, Class return)\r";
-	public static final String AND_THIS_RETURN_CLASS_IS = "\nand this return class is;\n";
-	public static final String HAD_A_RETURN_CLASS = "\nhad a return class;\n";
-	public static final String AND_THIS_PARAMETER_CLASS_IS = "\nand this parameter class is;\n";
-	public static final String HAD_A_PARAM_CLASS = "\nhad a param class;\n";
-	public static final String WITH_KEY = "with key;\n";
-	public static final String THE_INITAL_CALL_TO = "The inital call to the GRegistry's method\n";
+	public static final String PLEASE_FIX_THE_CODE_OR_TALK_TO_YOUR_ARCHITECT = "Please fix the code or talk to your architect.";
+	public static final String GET_CHECKED_INVOKER = "getCheckedInvoker(String key, Class param, Class return)";
+	public static final String GET_INVOKER = "getInvoker(String key, Class param, Class return)";
+	public static final String AND_THIS_RETURN_CLASS_IS = "and this return class is;";
+	public static final String HAD_A_RETURN_CLASS = "had a return class;";
+	public static final String AND_THIS_PARAMETER_CLASS_IS = "and this parameter class is;";
+	public static final String HAD_A_PARAM_CLASS = "had a param class;";
+	public static final String WITH_KEY = " with key;";
+	public static final String THE_INITAL_CALL_TO = "The inital call to the GRegistry's method";
 
 	private String key;
 	private String methodName;
@@ -32,20 +34,27 @@ public class InvokerDelegateMatchVerifier {
 	}
 
 	private void throwParamMismatchError(Class<?> paramClass) {
+		String lineSeperator = AppenderFactory.lineSeperator();
 		throw new IllegalStateException(THE_INITAL_CALL_TO + 
-				methodName + WITH_KEY +
-				key + HAD_A_PARAM_CLASS + proxyParam +
-				AND_THIS_PARAMETER_CLASS_IS +
-				paramClass + 
+				lineSeperator+
+				methodName + WITH_KEY + lineSeperator+
+				key + lineSeperator +
+				HAD_A_PARAM_CLASS + lineSeperator +
+				proxyParam + lineSeperator+
+				AND_THIS_PARAMETER_CLASS_IS + lineSeperator +
+				paramClass + lineSeperator +
 				PLEASE_FIX_THE_CODE_OR_TALK_TO_YOUR_ARCHITECT, marker);
 	}
 
 	private void throwReturnMismatchError(Class<?> returnClass) {
-		throw new IllegalStateException(THE_INITAL_CALL_TO + 
-				methodName + WITH_KEY +
-				key + HAD_A_RETURN_CLASS + proxyReturn +
-				AND_THIS_RETURN_CLASS_IS +
-				returnClass + 
+		String lineSeperator = AppenderFactory.lineSeperator();
+		throw new IllegalStateException(THE_INITAL_CALL_TO + lineSeperator+
+				methodName + WITH_KEY + lineSeperator +
+				key + lineSeperator +
+				HAD_A_RETURN_CLASS + lineSeperator +
+				proxyReturn + lineSeperator+
+				AND_THIS_RETURN_CLASS_IS + lineSeperator +
+				returnClass + lineSeperator +
 				PLEASE_FIX_THE_CODE_OR_TALK_TO_YOUR_ARCHITECT, marker);
 	}
 
