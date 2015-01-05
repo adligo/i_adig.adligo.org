@@ -1,4 +1,5 @@
-classes/
-bin/
-classes_e/
+/bin/
+/build/
+/classes/
+/classes_e/
 i_adig*.jar
